@@ -1,0 +1,21 @@
+# ingress.yaml
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tasky
+  namespace: traefik
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+    traefik.ingress.kubernetes.io/router.middlewares: traefik-basic-auth@kubernetescrd
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /tasky
+            pathType: Prefix
+            backend:
+              service:
+                name: tasky
+                port:
+                  number: 80
