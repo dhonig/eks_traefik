@@ -1,0 +1,33 @@
+# tasky.yaml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tasky
+  namespace: traefik
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tasky
+  template:
+    metadata:
+      labels:
+        app: tasky
+    spec:
+      containers:
+        - name: tasky
+          image: traefik/tasky
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tasky
+  namespace: traefik
+spec:
+  ports:
+    - name: http
+      targetPort: 80
+      port: 80
+  selector:
+    app: tasky
