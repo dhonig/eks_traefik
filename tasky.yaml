@@ -1,4 +1,4 @@
-# tasky.yaml
+# tasky5.yaml
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -17,7 +17,20 @@ spec:
     spec:
       containers:
         - name: tasky
-          image: traefik/tasky
+          image: 321213423920.dkr.ecr.us-east-1.amazonaws.com/wiz-containers:latest
+          env:
+          - name: SECRET_KEY
+            value: "supercalifragilousexpialidocious"
+          - name: MONGODB_URI
+            value: "mongodb://wiz_db_user:wiz_db-password@192.168.25.192:27017/?authSource=wiz_db defaultauthdb=wiz_db"
+          - name: NODE_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.nodeName
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
 ---
 apiVersion: v1
 kind: Service
@@ -27,7 +40,7 @@ metadata:
 spec:
   ports:
     - name: http
-      targetPort: 80
+      targetPort: 8080
       port: 80
   selector:
     app: tasky
